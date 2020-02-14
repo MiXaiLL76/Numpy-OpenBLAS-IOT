@@ -107,18 +107,35 @@ dot: 2.638400 sec
 pi@raspberrypi:~ $ OMP_NUM_THREADS=1 python3 test_numpy.py
 version: 1.19.0.dev0+491f41a
 maxint:  2147483647
-
 BLAS info:
  * libraries ['openblas', 'openblas']
  * library_dirs ['/usr/local/lib']
  * language c
  * define_macros [('HAVE_CBLAS', None)]
  * runtime_library_dirs ['/usr/local/lib']
-
 dot: 0.554173 sec
 
 
-pi@raspberrypi:~ $ OMP_NUM_THREADS=2 python3 test_numpy.py
+pi@raspberrypi:~ $ OMP_NUM_THREADS=3 python3 test_numpy.py
+version: 1.19.0.dev0+491f41a
+maxint:  2147483647
+BLAS info:
+ * libraries ['openblas', 'openblas']
+ * library_dirs ['/usr/local/lib']
+ * language c
+ * define_macros [('HAVE_CBLAS', None)]
+ * runtime_library_dirs ['/usr/local/lib']
+dot: 0.209525 sec
+```
+
+## Результаты
+
+Я конечно не специалист, но по моему я только что скомпилировал библиотеку которая работает слегка быстрее стоковой. в 8 раз быстрее при 2х ядрах. Дальше мне не хватает питания raspberry чтобы проверить.
+
+## Ошибки с которыми пока не справились
+- тут скорее всего просто нужно обеспечить нормальное питания процессора.
+```
+pi@raspberrypi:~ $ OMP_NUM_THREADS=4 python3 test_numpy.py
 version: 1.19.0.dev0+491f41a
 maxint:  2147483647
 
@@ -128,10 +145,12 @@ BLAS info:
  * language c
  * define_macros [('HAVE_CBLAS', None)]
  * runtime_library_dirs ['/usr/local/lib']
+Illegal instruction
 
-dot: 0.315645 sec
+pi@raspberrypi:~ $ dmesg
+[  370.517646] usb 1-1: USB disconnect, device number 6
+[  370.517657] usb 1-1.1: USB disconnect, device number 7
+[  370.517843] smsc95xx 1-1.1:1.0 eth0: unregister 'smsc95xx' usb-3f980000.usb-1.1, smsc95xx USB 2.0 Ethernet
+[  370.517910] smsc95xx 1-1.1:1.0 eth0: hardware isn't capable of remote wakeup
+[  370.727739] Under-voltage detected! (0x00050005)
 ```
-
-## Результаты
-
-Я конечно не специалист, но по моему я только что скомпилировал библиотеку которая работает слегка быстрее стоковой. в 8 раз быстрее при 2х ядрах. Дальше мне не хватает питания raspberry чтобы проверить.
