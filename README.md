@@ -86,7 +86,7 @@ pi@raspberrypi:~/numpy $ find . -name *whl*
 9. Установка колеса
 
 ```
-pi@raspberrypi:~/numpy $ pip3 install ./dist/numpy-1.19.0.dev0+491f41a-cp37-cp37m-linux_aarch64.whl -U
+pi@raspberrypi:~/numpy $ sudo pip3 install ./dist/numpy-1.19.0.dev0+491f41a-cp37-cp37m-linux_aarch64.whl -U
 ```
 
 
