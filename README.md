@@ -13,6 +13,9 @@
 2. Клонируйте репозиторий numpy
 
 ```
+pi@raspberrypi:~ $ sudo apt update
+pi@raspberrypi:~ $ sudo apt install -y python3-pip git gfortran
+pi@raspberrypi:~ $ pip3 install Cython setuptools wheel -U
 pi@raspberrypi:~ $ git clone https://github.com/numpy/numpy
 pi@raspberrypi:~ $ cd numpy
 ```
@@ -21,27 +24,24 @@ pi@raspberrypi:~ $ cd numpy
 
 ```
 pi@raspberrypi:~/numpy $ cp site.cfg.example site.cfg
-pi@raspberrypi:~/numpy $ sed -i "s@\/opt\/OpenBLAS@\/usr\/local@" site.cfg
-pi@raspberrypi:~/numpy $ nano site.cfg
-
 ```
 
-4. Раскоментируем данные библиотеки openblas
+4. Добавим данные библиотеки openblas
 
 ```
-...
-[openblas]
-libraries = openblas
-library_dirs = /usr/local/lib
-include_dirs = /usr/local/include
-runtime_library_dirs = /usr/local/lib
-...
+pi@raspberrypi:~/numpy $ \
+\
+echo "" >> site.cfg
+echo "[openblas]" >> site.cfg
+echo "libraries = openblas" >> site.cfg
+echo "library_dirs = /usr/local/lib" >> site.cfg
+echo "include_dirs = /usr/local/include" >> site.cfg
+echo "runtime_library_dirs = /usr/local/lib" >> site.cfg
 ```
 
 5. Проверим конфигурация 
 
 ```
-pi@raspberrypi:~/numpy $ pip3 install Cython setuptools wheel -U
 pi@raspberrypi:~/numpy $ python3 setup.py config
 ```
 
@@ -66,9 +66,15 @@ pi@raspberrypi:~/numpy $ python3 setup.py config
 7. Далее нам нужно скомпилировать [колесо](https://habr.com/ru/post/210450/)
 
 ```
-pi@raspberrypi:~/numpy $ python3 setup.py bdist_wheel
+pi@raspberrypi:~/numpy $ time python3 setup.py bdist_wheel
 ```
 ![Несколько минут спустя](fml.jpg "я ждаль")
+
+> real    11m10.456s
+> 
+> user    18m32.689s
+> 
+> sys     0m29.367s
 
 8. Поиск нашего колеса
 
