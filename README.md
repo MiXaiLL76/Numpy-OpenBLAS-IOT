@@ -119,33 +119,6 @@ dot: 2.638400 sec
 ## Проверка скомпилированного нами ~~мной~~ NUMPY
 
 ```
-pi@raspberrypi:~ $ OMP_NUM_THREADS=1 python3 test_numpy.py
-version: 1.19.0.dev0+491f41a
-maxint:  2147483647
-BLAS info:
- * libraries ['openblas', 'openblas']
- * library_dirs ['/usr/local/lib']
- * language c
- * define_macros [('HAVE_CBLAS', None)]
- * runtime_library_dirs ['/usr/local/lib']
-dot: 0.554173 sec
-
-
-pi@raspberrypi:~ $ OMP_NUM_THREADS=3 python3 test_numpy.py
-version: 1.19.0.dev0+491f41a
-maxint:  2147483647
-BLAS info:
- * libraries ['openblas', 'openblas']
- * library_dirs ['/usr/local/lib']
- * language c
- * define_macros [('HAVE_CBLAS', None)]
- * runtime_library_dirs ['/usr/local/lib']
-dot: 0.209525 sec
-```
-
-## Результаты
-
-```
 ubuntu@ubuntu:~$ python3 test_numpy.py
 version: 1.19.0.dev0+081c723
 maxint:  9223372036854775807
