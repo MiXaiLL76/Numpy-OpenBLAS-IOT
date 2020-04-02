@@ -11,25 +11,28 @@
 
 1. Установите последний [релиз OpenBLAS](https://github.com/MiXaiLL76/OpenBLAS_RaspberryPi/releases)
 2. Клонируйте репозиторий numpy
+3. Выполняйте команды последовательно. Всмотритесь в то, что делаете!
 
 ```
-pi@raspberrypi:~ $ sudo apt update
-pi@raspberrypi:~ $ sudo apt install -y python3-pip git gfortran
-pi@raspberrypi:~ $ pip3 install Cython setuptools wheel -U
-pi@raspberrypi:~ $ git clone https://github.com/numpy/numpy
-pi@raspberrypi:~ $ cd numpy
+ubuntu@ubuntu:~$ \
+\
+sudo apt update
+sudo apt install -y python3-pip git gfortran
+pip3 install Cython setuptools wheel -U
+git clone https://github.com/numpy/numpy
+cd numpy
 ```
 
-3. Скопируем и сохраним изначальные настройки site.cfg.example
+1. Скопируем и сохраним изначальные настройки site.cfg.example
 
 ```
-pi@raspberrypi:~/numpy $ cp site.cfg.example site.cfg
+ubuntu@ubuntu:~/numpy$ cp site.cfg.example site.cfg
 ```
 
 4. Добавим данные библиотеки openblas
 
 ```
-pi@raspberrypi:~/numpy $ \
+ubuntu@ubuntu:~/numpy$ \
 \
 echo "" >> site.cfg
 echo "[openblas]" >> site.cfg
@@ -42,7 +45,7 @@ echo "runtime_library_dirs = /usr/local/lib" >> site.cfg
 5. Проверим конфигурация 
 
 ```
-pi@raspberrypi:~/numpy $ python3 setup.py config
+ubuntu@ubuntu:~/numpy$ python3 setup.py config
 ```
 
 6. В итоговом выводе команды будут строки 
@@ -66,29 +69,35 @@ pi@raspberrypi:~/numpy $ python3 setup.py config
 7. Далее нам нужно скомпилировать [колесо](https://habr.com/ru/post/210450/)
 
 ```
-pi@raspberrypi:~/numpy $ time python3 setup.py bdist_wheel
+ubuntu@ubuntu:~/numpy$ time python3 setup.py bdist_wheel
 ```
 ![Несколько минут спустя](fml.jpg "я ждаль")
 
-> real    11m10.456s
+> real    8m44.266s
 > 
-> user    18m32.689s
+> user    12m51.680s
 > 
-> sys     0m29.367s
+> sys     0m42.121s
 
 8. Поиск нашего колеса
 
 ```
-pi@raspberrypi:~/numpy $ find . -name *whl*
-./dist/numpy-1.19.0.dev0+491f41a-cp37-cp37m-linux_aarch64.whl
+ubuntu@ubuntu:~/numpy$ find . -name *whl*
 ```
+
+> FIND! ./dist/numpy-1.19.0.dev0+081c723-cp37-cp37m-linux_aarch64.whl
 
 9. Установка колеса
 
 ```
-pi@raspberrypi:~/numpy $ sudo pip3 install ./dist/numpy-1.19.0.dev0+491f41a-cp37-cp37m-linux_aarch64.whl -U
+ubuntu@ubuntu:~/numpy$ sudo pip3 install ./dist/numpy-1.19.0.dev0+081c723-cp37-cp37m-linux_aarch64.whl -U
 ```
 
+> Processing ./dist/numpy-1.19.0.dev0+081c723-cp37-cp37m-linux_aarch64.whl
+> 
+> Installing collected packages: numpy
+> 
+> Successfully installed numpy-1.19.0.dev0+081c723
 
 
 ## Проверка СТАРОГО NUMPY КОТОРЫЙ ИЗ РЕПОЗИТОРИЯ RPI
@@ -136,14 +145,10 @@ dot: 0.209525 sec
 
 ## Результаты
 
-Я конечно не специалист, но по моему я только что скомпилировал библиотеку которая работает слегка быстрее стоковой. в 8 раз быстрее при 2х ядрах. Дальше мне не хватает питания raspberry чтобы проверить.
-
-## Ошибки с которыми пока не справились
-- тут скорее всего просто нужно обеспечить нормальное питания процессора.
 ```
-pi@raspberrypi:~ $ OMP_NUM_THREADS=4 python3 test_numpy.py
-version: 1.19.0.dev0+491f41a
-maxint:  2147483647
+ubuntu@ubuntu:~$ python3 test_numpy.py
+version: 1.19.0.dev0+081c723
+maxint:  9223372036854775807
 
 BLAS info:
  * libraries ['openblas', 'openblas']
@@ -151,12 +156,6 @@ BLAS info:
  * language c
  * define_macros [('HAVE_CBLAS', None)]
  * runtime_library_dirs ['/usr/local/lib']
-Illegal instruction
 
-pi@raspberrypi:~ $ dmesg
-[  370.517646] usb 1-1: USB disconnect, device number 6
-[  370.517657] usb 1-1.1: USB disconnect, device number 7
-[  370.517843] smsc95xx 1-1.1:1.0 eth0: unregister 'smsc95xx' usb-3f980000.usb-1.1, smsc95xx USB 2.0 Ethernet
-[  370.517910] smsc95xx 1-1.1:1.0 eth0: hardware isn't capable of remote wakeup
-[  370.727739] Under-voltage detected! (0x00050005)
+dot: 0.115425 sec
 ```
